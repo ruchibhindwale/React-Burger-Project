@@ -3,11 +3,16 @@ import Burger from '../../components/Burger/Burger';
 
 class BurgerBuilder extends Component{
     state = { 
-       ingredients : {
+       /*ingredients : {
            'Cheese': 2,
-           'PotatoPatty' : 1,
-           'Veggies': 1
-       },
+           'PotatoPatty' : 2,
+           'Veggies': 3
+       },*/
+       ingredients: [
+           {name: 'Cheese', quantity: 0},
+           {name: 'PotatoPatty', quantity:0},
+           {name: 'Veggies', quantity: 0}
+       ],
        price: 0,
        checkedOut : false 
     }

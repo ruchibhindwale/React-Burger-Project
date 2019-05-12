@@ -3,21 +3,34 @@ import classes from './Burger.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
 const Burger = props => {
-    const transformedIngredients = Object.keys(props.ingredients).map(()=>{
+    let transformedIngredients = [], ingredientsArrSum=0; 
+    transformedIngredients = props.ingredients.map((element, index) => {
+        let ingrArr = [];
+        for(let i=0; i<element.quantity; i++){
+            ingrArr.push(<BurgerIngredient type={element.name}/>);
+        }
+        return ingrArr;
+    })
 
-    });
+    ingredientsArrSum = transformedIngredients.reduce((acc, currentVal) => {
+        return acc + currentVal.length
+    }, 0)
+
+    /*const transformedIngredients = Object.keys(props.ingredients).map((ingr)=>{
+        return [...Array(props.ingredients[ingr])].map((_, index) => {
+            return <BurgerIngredient type={ingr}/>
+        })
+    });*/
+
+    if(ingredientsArrSum == 0 ){
+        transformedIngredients = <p>Please start adding ingredients</p>;
+    }
+
     return (
-    <div>
-    <div className={classes.lollipop}>
-        <div className={classes.lollipopCir}></div>
-        <div className={classes.lollipopStick}></div>
-    </div>
-    <div className={classes.fruitella}><span>Fruitella</span></div>
-    <div className={classes.icecream}>
-        <div className={classes.top}></div>
-        <div className={classes.cone}></div>
-    </div>
-    <div className={classes.chocolate}>Chocolate</div>
+    <div className={classes.Burger}>
+        <BurgerIngredient type="BreadTop"/>
+            {transformedIngredients}
+        <BurgerIngredient type="BreadBottom"/>
     </div>
     );
 }
