@@ -1,16 +1,14 @@
 import React, {Fragment} from 'react';
 import BuildControl from './BuildControl/BuildControl';
 import classes from './BuildControls.css';
+import ingredients from '../../../data/constants'
 
-const controls =[
-    {label: 'Cheese', type: 'cheese'},
-    {label: 'PotatoPatty', type: 'potatopatty'},
-    {label: 'SoyPatty', type: 'soypatty'},
-    {label: 'Veggies', type: 'veggies'},
-];
-
-const BuildControls = props => controls.map((ctrl) =>
-<BuildControl label={ctrl.label} key={ctrl.label}/>) 
+const BuildControls = props => ingredients.map((ctrl) =>
+<BuildControl ingrAdded={() => props.ingredientAdded(ctrl.type)} 
+              ingrRemoved={() => props.ingredientRemoved(ctrl.type)} 
+              label={ctrl.label} 
+              key={ctrl.label}
+              disabled={props.disabledInfo[ctrl.type]}/>) 
     //console.log(props.availableIngr);
 
    /* const availableIngrs = props.availableIngr.map((element)=>{
