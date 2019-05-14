@@ -6,3 +6,4 @@ const ingredientsDetails = [
 ];
 
 export default ingredientsDetails;
+export const MinPrice = 15;

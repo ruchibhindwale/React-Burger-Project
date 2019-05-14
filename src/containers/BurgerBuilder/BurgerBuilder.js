@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import ingredients from '../../data/constants';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
 class BurgerBuilder extends Component{
     state = { 
@@ -17,7 +19,7 @@ class BurgerBuilder extends Component{
            {name: 'Veggies', quantity: 0}
        ],
        price: 15,
-       checkedOut : false 
+       inCheckoutProcess : false 
     }
     
     addIngredientHandler = (ingrName) => {
@@ -55,11 +57,30 @@ class BurgerBuilder extends Component{
                 }
             });
         
-        return {
-            ingredients: updatedIngredients,
-            price: prevState.price - updatedPrice
-        }
+            return {
+                ingredients: updatedIngredients,
+                price: prevState.price - updatedPrice
+            }
         });
+    }
+
+    checkedOutHandler = () => {
+        this.setState({
+            inCheckoutProcess: true
+        });
+
+        this.props.toggleBackdrop(true);
+    }
+
+    purchaseContinueHandler = () => {
+
+    }
+
+    purchaseCancelHandler = () => {
+        this.setState({
+            inCheckoutProcess: false
+        });
+        this.props.toggleBackdrop(false);
     }
 
     render(){
@@ -71,8 +92,19 @@ class BurgerBuilder extends Component{
 
         return (
             <Fragment>
+                <Modal show={this.state.inCheckoutProcess}>
+                    <OrderSummary 
+                        ingredients={this.state.ingredients}
+                        purchaseCancelled={this.purchaseCancelHandler}
+                        purchaseContinued={this.purchaseContinueHandler}/>
+                </Modal> 
                 <Burger ingredients={this.state.ingredients}/>
-                <BuildControls disabledInfo={disabledInfo} ingredientAdded={this.addIngredientHandler} ingredientRemoved={this.removeIngredientHandler}/>
+                <BuildControls disabledInfo={disabledInfo} 
+                    ingredientAdded={this.addIngredientHandler} 
+                    ingredientRemoved={this.removeIngredientHandler}
+                    totalPrice={this.state.price}
+                    checkedOut={this.checkedOutHandler}
+                    inCheckoutProcess={this.state.inCheckoutProcess}/>
             </Fragment>
         );
     }
