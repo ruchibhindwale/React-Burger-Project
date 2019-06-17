@@ -102,6 +102,7 @@ class BurgerBuilder extends Component{
     }
 
     purchaseCancelHandler = () => {
+        console.log('Purchase Cancel  Handler');
         this.setState({
             inCheckoutProcess: false
         });
@@ -109,6 +110,7 @@ class BurgerBuilder extends Component{
     }
 
     render(){
+        console.log('BurgerBuilder props', this.props);
         const disabledInfo = {};
         
 
