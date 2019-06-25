@@ -1,15 +1,15 @@
 import React, {Fragment} from 'react';
 import Button from '../../UI/Button/Button';
 import { Link } from 'react-router-dom';
-import { pipelineTopicExpression } from '@babel/types';
+import { connect } from 'react-redux';
 
-const OrderSummary = props => {
-    return (
+const OrderSummary = (props) => {
+    let orderSummary = props.ingrs ? (
         <Fragment>
             <h3> Your Order </h3>
             <p> A delicious burger wih the following ingredients : </p>
             <ul>
-                {props.ingredients.map((ingr) => {
+                {props.ingrs.map((ingr) => {
                     return (
                         <li key={ingr.name}>
                             <span style={{textTransform: 'capitalize'}}>{ingr.name}</span>: {ingr.quantity}
@@ -20,14 +20,17 @@ const OrderSummary = props => {
             <p> <strong> Total Price : {props.price} </strong> </p>
             <p> Continue to Checkout ?</p>
             <Button clicked={props.purchaseCancelled} btnType='Danger'>CANCEL</Button>
-            <Link to={{
-                pathname : '/checkout',
-                state: {ingredients: props.ingredients, 
-                        price: props.price
-                    }
-            }}><Button btnType='Success'>CONTINUE</Button></Link>
+            <Link to='/checkout'><Button btnType='Success'>CONTINUE</Button></Link>
         </Fragment>
-    )
+    ) : null
+    return <div>{ orderSummary }</div>
 }
 
-export default OrderSummary;
+const mapStateToProps = state => {
+    return {
+        ingrs : state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice
+    }
+}
+
+export default connect(mapStateToProps)(OrderSummary);

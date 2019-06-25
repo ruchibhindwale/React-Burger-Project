@@ -2,21 +2,9 @@ import React, { Component } from 'react';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from '../../containers/ContactData/ContactData';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Checkout extends Component {
-
-    state = {
-        ingredients: [
-            {name: 'Cheese', quantity: 2},
-            {name: 'PotatoPatty', quantity:2},
-            {name: 'SoyPatty', quantity: 0},
-            {name: 'Veggies', quantity: 1}
-        ]
-    }
-
-    componentDidMount = () => {
-        this.setState({ingredients : this.props.location.state.ingredients});
-    }
 
     cancelHandler = () => {
         this.props.history.goBack();
@@ -27,16 +15,23 @@ class Checkout extends Component {
     }
 
     render () {
+        console.log('Ingredients in Checkout', this.props.ingrs);
         return (
             <div>
                 <CheckoutSummary 
-                ingredients= {this.state.ingredients}
+                ingredients= {this.props.ingrs}
                 cancel={this.cancelHandler} 
                 continue={this.continueHandler}/>
-                <Route path={this.props.match.url + '/contact'} render={() => <ContactData ingredients={this.state.ingredients}/>}/>
+                <Route path={this.props.match.url + '/contact'} component={ContactData}/>
             </div> 
         );
     }
 }
 
-export default Checkout
+const mapStateToProps = state => {
+    return {
+        ingrs : state.burgerBuilder.ingredients
+    }
+}
+
+export default connect(mapStateToProps)(Checkout)

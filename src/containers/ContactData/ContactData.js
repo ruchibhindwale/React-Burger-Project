@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Input from '../../components/UI/Input/Input';
 import classes from './ContactData.css'
+import * as actions from '../../store/actions/index';
 
 import axios from 'axios';
 
@@ -72,8 +74,7 @@ class ContactData extends Component {
                 },
                 valid: false
             },
-        },
-        checkedOut: false
+        }
     }
 
     orderSubmittedHandler = (event) => {
@@ -83,21 +84,21 @@ class ContactData extends Component {
         for(let key in this.state.orderForm){
             formData[key] = this.state.orderForm[key];
         }
-        const state = this.state,
-              order = {
-                ingredients: this.props.ingredients,
+        const order = {
+                ingredients: this.props.ingrs,
                 price: this.props.price,
                 orderData: formData
             
         };
-        axios.post('/orders.json', order)
+        /*axios.post('/orders.json', order)
         .then(response => {
             this.setState({checkedOut : false, inCheckoutProcess: false});
             this.props.history.push('/orders');
         })
         .catch(error => {
             this.setState({checkedOut : true, inCheckoutProcess: false});
-        })
+        })*/
+        this.props.onOrderSubmitted(order);
     }
 
     checkValidity(value, rules){
@@ -142,7 +143,7 @@ class ContactData extends Component {
 
         return (
             <div className={classes.ContactData}>
-                {this.state.checkedOut ? <Spinner /> : null}
+                {this.props.checkedOut ? <Spinner /> : null}
                 <h4>Enter your Contact Data</h4>
                 <form onsubmit={this.orderSubmittedHandler}>
                     {
@@ -156,11 +157,25 @@ class ContactData extends Component {
                                changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
                         )
                     }
-                    <Button btnType='Success'>ORDER</Button>
+                    <Button type='button' btnType='Success' clicked={this.orderSubmittedHandler}>ORDER</Button>
                 </form>
             </div>
         );
     }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+    return {
+        ingrs : state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        checkedOut: state.order.checkedOut
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onOrderSubmitted: (orderData) => dispatch(actions.orderSubmitted(orderData))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
