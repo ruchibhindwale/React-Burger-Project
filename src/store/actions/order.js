@@ -30,3 +30,29 @@ export const orderSubmitted = (orderData) => {
             .catch( err => dispatch(orderFailure(err)))
         }
     }
+
+export const fetchOrdersSuccess = (orders) => {
+    return {
+        type : actionTypes.FETCH_ORDERS_SUCCESS,
+        orders: orders
+    }
+}
+
+export const fetchOrdersFailure = (error) => {
+    return {
+        type: actionTypes.FETCH_ORDERS_FAIL,
+        error: error
+    }
+}
+
+export const fetchOrders = () => {
+    return dispatch => {
+        axios.get('/orders.json')
+            .then(res => {
+                dispatch(fetchOrdersSuccess(res.data))
+            })
+            .catch((error) => {
+                dispatch(fetchOrdersFailure(error))
+            })
+    }
+}

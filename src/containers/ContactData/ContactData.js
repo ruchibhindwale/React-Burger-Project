@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -68,7 +69,7 @@ class ContactData extends Component {
                         {value: 'cheapest', displayValue: 'Cheapest'}
                     ]
                 },
-                value: '',
+                value: 'fastest',
                 validation : {
                     required: true
                 },
@@ -141,8 +142,11 @@ class ContactData extends Component {
             })
         }
 
+        let orderSuccess = this.props.orders ? <Redirect to='/orders' /> : null;
+
         return (
             <div className={classes.ContactData}>
+                {orderSuccess}
                 {this.props.checkedOut ? <Spinner /> : null}
                 <h4>Enter your Contact Data</h4>
                 <form onsubmit={this.orderSubmittedHandler}>
@@ -168,7 +172,9 @@ const mapStateToProps = state => {
     return {
         ingrs : state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        checkedOut: state.order.checkedOut
+        checkedOut: state.order.checkedOut,
+        orders: state.order.orders
+
     }
 }
 

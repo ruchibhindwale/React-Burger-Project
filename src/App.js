@@ -3,6 +3,7 @@ import Layout from './components/Layout/Layout';
 import Backdrop from './components/UI/Backdrop/Backdrop';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Checkout from './containers/Checkout/Checkout';
+import Orders from './containers/Orders/orders';
 import { Route } from 'react-router-dom';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Layout>
         <Route path='/build-your-burger' render={(props) => <BurgerBuilder {...props} toggleBackdrop={updateBackdropState} showBackdrop={state.displayBackdrop} />} />
         <Route path='/checkout' component={Checkout} />
+        <Route path='/orders' component={Orders} />
         <Route path ='/' exact render={(props) => <BurgerBuilder {...props} toggleBackdrop={updateBackdropState} showBackdrop={state.displayBackdrop} />} />
         {/*<BurgerBuilder toggleBackdrop={updateBackdropState} showBackdrop={state.displayBackdrop}/>*/}
       </Layout>
