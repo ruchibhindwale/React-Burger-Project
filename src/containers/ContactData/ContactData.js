@@ -91,14 +91,6 @@ class ContactData extends Component {
                 orderData: formData
             
         };
-        /*axios.post('/orders.json', order)
-        .then(response => {
-            this.setState({checkedOut : false, inCheckoutProcess: false});
-            this.props.history.push('/orders');
-        })
-        .catch(error => {
-            this.setState({checkedOut : true, inCheckoutProcess: false});
-        })*/
         this.props.onOrderSubmitted(order);
     }
 
@@ -142,11 +134,8 @@ class ContactData extends Component {
             })
         }
 
-        let orderSuccess = this.props.orders ? <Redirect to='/orders' /> : null;
-
         return (
             <div className={classes.ContactData}>
-                {orderSuccess}
                 {this.props.checkedOut ? <Spinner /> : null}
                 <h4>Enter your Contact Data</h4>
                 <form onsubmit={this.orderSubmittedHandler}>
